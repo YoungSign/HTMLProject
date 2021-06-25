@@ -1,0 +1,23 @@
+{
+  "name": "teatalk-js-base-sdk",
+  "version": "0.0.1",
+  "description": "for cinmessage protocol",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.feinno.com:urcs-v3/teatalk-js-base-sdk.git"
+  },
+  "keywords": [
+    "cinmessage",
+    "rcs",
+    "api",
+    "im",
+    "mqtt"
+  ],
+  "author": "wangchen",
+  "license": "ISC",
+  "dependencies": {}
+}

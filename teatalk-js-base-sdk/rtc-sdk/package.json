@@ -1,0 +1,26 @@
+{
+  "name": "msg-sdk",
+  "version": "0.0.1",
+  "description": "im protocol",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx webpack-dev-server --mode development --content-base ./dist",
+    "build": "webpack --config webpack.config.js"
+  },
+  "author": "wangchen",
+  "license": "ISC",
+  "devDependencies": {
+    "clean-webpack-plugin": "^1.0.1",
+    "ts-lint": "^4.5.1",
+    "ts-loader": "^5.3.3",
+    "tslint": "^5.11.0",
+    "tslint-loader": "^3.5.4",
+    "typescript": "^3.7.5",
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "crypto-js": "^4.0.0"
+  }
+}

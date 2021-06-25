@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>figure、figcaption、details、summary和mark元素</title>
+</head>
+
+<body>
+    <!--figure元素以及figcaption元素-->
+    <!--figure元素是一种组合元素，带有可选标题，用来表示网页上一块独立内容移除不会对网页造成影响-->
+    <!--figcaption元素是figure元素的标题，从属于figure元素，必须书写在figure元素内部-->
+    <figure>
+        <figcaption>外星人</figcaption>
+        <img src="img/外星人.png" alt="外星人">
+    </figure>
+
+    <!--details元素和summary元素-->
+    <!--details元素用于标识当前元素内部的子元素可以被展开收缩形式的元素，该元素有个bool类型的open属性，该属性值为true时,该元素内部的子元素被展开显示，默认为false-->
+    <!--summary元素从属于details元素,单击时会展开details元素内容，如果没有summary元素，浏览器会提供默认元素-->
+    <details id="detail" onclick="detail(this)">
+        <summary>单击</summary>
+        <p id="p" style="visibility: hidden">这是一个p元素</p>
+    </details>
+
+    <script>
+        function detail(detail) {
+            var p = document.getElementById("p");
+            if (detail.open) {
+                p.style.visibility = "hidden";
+            }
+
+            else {
+                p.style.visibility = "visible";
+            }
+        }
+    </script>
+
+    <!--mark元素-->
+    <!--表示当前页面中需要突出显示或高亮显示的具有参考作用的一段文字-->
+    <p>
+        这是一个
+        <mark>P</mark>
+        元素
+    </p>
+</body>
+
+</html>

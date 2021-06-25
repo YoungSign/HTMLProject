@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>formtarget属性</title>
+</head>
+<body>
+<!--HTML5中可以为多个提交按钮指定formtarget属性来指定提交后在何处打开所需加载页面-->
+<form id="formTarget">
+    <!--在新的浏览器页面打开-->
+    <input type="submit" name="input1" value="input1" formtarget="_blank" formaction="http://202.108.22.5">
+    <!--在相同框架或窗口中打开，此为默认，通常不用制定-->
+    <input type="submit" name="input2" value="input2" formtarget="_self" formaction="http://202.108.22.5">
+    <!--在当前框架的父框架中打开-->
+    <input type="submit" name="input3" value="input3" formtarget="_parent" formaction="http://202.108.22.5">
+    <!--在当前窗口打开-->
+    <input type="submit" name="input4" value="input4" formtarget="_top" formaction="http://202.108.22.5">
+    <!--在指定框架中打开-->
+    <input type="submit" name="input5" value="input5" formtarget="framename" formaction="http://202.108.22.5">
+</form>
+</body>
+</html>

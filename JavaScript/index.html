@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="js/index.js"></script>
+    <script type="text/javascript"></script>
+</head>
+<body>
+<p>i = 10,j = 10;i+j=?</p>
+<p id="sumid"></p>
+<button onclick="sum()">结果</button>
+<script>
+    function sum() {
+        var i = 10;
+        var j = 10;
+        var m = i + j;
+//      输出
+//      document.write(m);
+        document.getElementById("sumid").innerHTML = m;
+    }
+</script>
+</body>
+</html>

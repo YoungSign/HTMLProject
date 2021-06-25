@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OB</title>
+</head>
+<body>
+<!--打开关闭页面按钮-->
+<button onclick="btnClick()">打开新窗口</button>
+<!--清除Interval按钮-->
+<button onclick="stopTime()">停止时间</button>
+<!--调用延时执行方法按钮-->
+<button onclick="myWin()">3秒后执行</button>
+<!--停止延时执行发法(循环)-->
+<button onclick="stopWin()">停止执行</button>
+<p id="pTime"></p>
+<script>
+    //html的宽高属性
+    document.write("宽度：" + window.innerWidth + "高度：" + window.innerHeight);
+
+    function btnClick() {
+        //打开当前页面。window.open有三个参数1.打开的url。2.打开页面的名字。3.打开页面的属性。
+        window.open("JumpPage.html", "windowname", "height=200,width=200,top=100,left=100,toolbar=no,menubar=no");
+        //关闭当前页面。关闭当前窗口。
+        window.close();
+    }
+
+    //1.setInterval()间隔指定的毫秒数不停地执行指定的代码。clearInterval()用于停止setInterval()方法。
+    var myTime = setInterval(function () {
+        getTime();
+    }, 1000);
+
+    function getTime() {
+        var d = new Date();
+        var t = d.toLocaleTimeString();
+        document.getElementById("pTime").innerHTML = t;
+    }
+
+    function stopTime() {
+        clearInterval(myTime);
+    }
+
+    //2.setTimeout()暂停指定的毫秒数后执行指定的代码。clearTimeout()用于停止setTimeout()方法。
+    var win;
+    function myWin() {
+        alert("Hello!");
+        win = setTimeout(function () {
+            myWin();
+        }, 3000);
+    }
+
+    function stopWin() {
+        clearTimeout(win);
+    }
+</script>
+</body>
+</html>

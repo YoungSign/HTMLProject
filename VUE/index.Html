@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<head>
+    <title>index</title>
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+    <div id='app'>
+        {{msg}}
+    </div>
+
+    <div id="box">
+        <span>{{num}}</span>
+        <br>
+        <button @click='handle'>click</button>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'hello world!'
+            }
+        });
+
+        setTimeout(() => {
+            vm.msg = '你好世界！';
+        }, 1000);
+
+        let vm1 = new Vue({
+            el: '#box',
+            data: {
+                num: 0
+            },
+            methods: {
+                handle() {
+                    this.num++;
+                }
+            }
+        });
+    </script>
+</body>

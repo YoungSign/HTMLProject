@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <title>模态框</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!--模态框-->
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLable">标题</h4>
+                </div>
+                <div class="modal-body">
+                    内容
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--打开模态框-->
+    <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">打开模态框</button>
+
+    <!--带检出效果的模态框-->
+    <!--fade：渐出效果-->
+    <!--大的模态框-->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">打开大模态框</button>
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                这是个大模态框
+            </div>
+        </div>
+    </div>
+
+    <!--正常  模态框-->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example">打开正常模态框</button>
+    <div class="modal fade bs-example" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                这是个正常模态框
+            </div>
+        </div>
+    </div>
+
+    <!--小模态框-->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">打开小模态框</button>
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                这是个小模态框
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-target="#myModalGroup" data-toggle="modal" data-whatever="@mdo">
+        打开for@mdo
+    </button>
+    <div class="modal fade" id="myModalGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!--模态框头部-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalGroupDiv">新消息</h4>
+                </div>
+                <!--模态框内容-->
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">内容</label>
+                            <input class="form-control" type="text" id="recipient-name">
+                        </div>
+                    </form>
+                </div>
+                <!--模态框底部-->
+                <div class="modal-footer">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+                    <button class="btn btn-primary" type="button">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        //    $("#myModal").modal("show");
+        //获取模态框名字
+        $("#myModalGroup").on("show.bs.modal", function (event) {
+            var button = $(event.relatedTarget)
+            var reciptient = button.data("whatever")
+            var modal = $(this);
+            modal.find(".modal-title").text("新消息：" + reciptient);
+            modal.find(".modal-body input").val(reciptient);
+        })
+    </script>
+</body>
+
+</html>

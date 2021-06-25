@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>input元素</title>
+</head>
+<body>
+<!--url-->
+<form>
+    <!--如果提交的网址不符合规则，会出现提示"请输入一个url"-->
+    <input type="url" name="url" value="http://202.108.22.5">
+    <input type="submit" value="提交">
+</form>
+
+<!--email-->
+<form>
+    <!--如果提交的网址不符合规则，会出现提示"请输入电子邮件地址"-->
+    <input type="email" name="email" value="522423918@qq.com">
+    <input type="submit" value="提交">
+</form>
+
+<!--date-->
+<input type="date" name="date" value="">
+
+<br/>
+
+<!--time-->
+<input type="time" name="time" value="9:00">
+
+<br/>
+
+<!--datetime-->
+<input type="datetime" name="datetime" value="">
+
+<br/>
+
+<!--datetime-local-->
+<!--专门用来输入本地日期时间的文本框，提交时对日期和时间进行检查-->
+<input type="datetime-local" name="datetime-local" value="">
+
+<!--month-->
+<input type="month" name="month" value="2016-07-20">
+
+<!--week-->
+<input type="week" name="week">
+
+<!--number-->
+<input type="number" name="number" value="15" min="10" max="100" step="5">
+<!--calc-->
+<form>
+    <input type="number" id="n1">
+    +
+    <input type="number" id="n2">
+    =
+    <input type="number" id="res" readonly>
+    <input type="button" value="计算" onclick="add()">
+</form>
+
+<script>
+    function add() {
+        var n1 = document.getElementById("n1").valueAsNumber;
+        var n2 = document.getElementById("n2").valueAsNumber;
+        document.getElementById("res").valueAsNumber = n1 + n2;
+    }
+</script>
+
+<!--range元素-->
+<input type="range" name="range" min="0" max="100" value="25" step="5">
+
+<!--search-->
+<input type="search" name="search">
+
+<!--tel-->
+<input type="tel" name="tel">
+
+<!--color-->
+<input type="color" name="color"
+       onchange="document.body.style.backgroundColor=document.getElementById('currentColor ').textContent=this.value;">
+<span id="currentColor"></span>
+
+<!--output元素追加-->
+<script>
+    function value_change() {
+        var num = document.getElementById("range").value;
+        document.getElementById("output").value = num;
+    }
+</script>
+<form id="testform">
+    <input id="range" type="range" min="0" max="100" step="5" value="10" onchange="value_change()">
+    <output id="output">10</output>
+</form>
+</body>
+</html>

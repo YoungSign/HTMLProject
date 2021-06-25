@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>formenctype属性</title>
+</head>
+<body>
+<!--用于指定表单在发送到服务器之前应该以何种方式对表单内元素指定不同的编码方式-->
+<form>
+    <!--表单数据的空格被转换为+，但不对表单中的特殊字符进行编码-->
+    <input type="text" formenctype="text/plain">
+    <!--不对字符进行编码，在使用包含文件上传控件时的表单时必须使用该值-->
+    <input type="text" formenctype="multipart/form-data">
+    <!--在发送前编码所有字符，当表单元素为get时，浏览器用当前编码方式把表单数据转换为字符-->
+    <input type="text" formenctype="application/x-www-form-urlencoded">
+</form>
+</body>
+</html>

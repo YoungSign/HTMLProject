@@ -1,0 +1,27 @@
+body{
+    padding-top: 50px;
+    margin: 10px 0;
+}
+
+.starter{
+    padding: 5px 1px;
+    text-align: center;
+}
+
+.row{
+    margin-bottom: 10px;
+}
+
+.row .row{
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+[class*="col-"]{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: #EEE;
+    background-color: rgba(86,61,124,.15);
+    border: 1px solid #DDD;
+    border: 1px solid rgba(86,61,124,.2);;
+}

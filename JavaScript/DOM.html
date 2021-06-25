@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM操作HTML</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<a id="aid" href="http://202.108.22.5">Hello</a>
+<button onclick="demo()">改变地址</button>
+
+<div id="aa" class="div">
+    Hello!
+</div>
+<button onclick="changeColor()">改变背景颜色</button>
+
+
+<script>
+    function demo() {
+//        通过id找到HTML元素
+//        document.getElementById("pid").innerHTML = "World!";
+//        通过标签名找到HTML元素
+//        寻找当前元素中的第一个满足条件的
+//        document.getElementByTagName("pid");
+//        改变HTML属性
+        document.getElementById("aid").href = "http://mail.qq.com"
+    }
+
+    function changeColor() {
+        document.getElementById("aa").style.background = "blue";
+    }
+</script>
+</body>
+</html>

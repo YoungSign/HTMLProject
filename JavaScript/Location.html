@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<button onclick="hostName()">hostName</button>
+<button onclick="pathName()">pathName</button>
+<button onclick="port()">port</button>
+<button onclick="protocol()">protocol</button>
+<button onclick="href()">href</button>
+<button onclick="assign()">assign</button>
+<p id="pId"></p>
+
+<!--window.location用于获取当前页面的地址(url)，并重定向到新页面-->
+<script>
+    //location.hostname返回web主机域名
+    function hostName() {
+        document.getElementById("pId").innerHTML = window.location.hostname;
+    }
+
+    //location.pathname返回当前页面的路径和文件名
+    function pathName() {
+        document.getElementById("pId").innerHTML = window.location.hostname;
+    }
+
+    //location.port返回主机端口
+    function port() {
+        document.getElementById("pId").innerHTML = window.location.port;
+    }
+
+    //location.protocol返回使用的web协议
+    function protocol() {
+        document.getElementById("pId").innerHTML = window.location.protocol;
+    }
+
+    //location.href返回当前页面的url
+    function href() {
+        document.getElementById("pId").innerHTML = window.location.href;
+    }
+
+    //location.assign()(方法)加载新文档
+    function assign() {
+        location.assign("http://www.baidu.com")
+    }
+</script>
+</body>
+<head>
+    <meta charset="UTF-8">
+    <title>Location</title>
+</head>
+</html>

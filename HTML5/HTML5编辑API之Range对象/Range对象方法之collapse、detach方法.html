@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Range对象方法之collapse、detach方法</title>
+</head>
+
+<body>
+    <!--collapse方法用于Range对象所代表区域的终点移动到该区域的起点处，或将Range对象所代表区域的起点移动到终点处-->
+    <div id="div" style="background-color: bisque;width: 300px;height: 50px;">元素中的内容</div>
+    <button onclick="seleRangeContents()">选择元素</button>
+    <button onclick="unseleRangeContents()">取消元素</button>
+    <button onclick="showRange()">显示Range内容</button>
+
+    <!--detach方法用于浏览器中释放Range对象，释放之后将不能访问该对象，否则将抛出脚本异常-->
+    <script>
+        var rangeObj = document.createRange();
+
+        function seleRangeContents() {
+            var div = document.getElementById("div");
+            rangeObj.selectNode(div);
+            //        rangeObj.detach();
+        }
+
+        function unseleRangeContents() {
+            rangeObj.collapse(false);
+        }
+
+        function showRange() {
+            alert(rangeObj.toString());
+        }
+    </script>
+</body>
+
+</html>

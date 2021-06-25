@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body onload="msg()">
+<div class="div" onmouseover="onOver(this)" onmouseout="onOut(this)"></div>
+<form>
+    <input type="text" onchange="alert('内容呢？！')">
+    <input type="text" onselect="sel(this)" onfocus="focu(this)">
+</form>
+
+<script>
+    //鼠标进入
+    function onOver(ooj) {
+        ooj.innerHTML = "Hello!";
+    }
+    //鼠标移移出
+    function onOut(ooj) {
+        ooj.innerHTML = "world!"
+    }
+    //内容改变
+    function onChan(bg) {
+        alert("Hello!内容改变了")
+    }
+    //文本选中
+    function sel(bg) {
+        bg.style.background = "red";
+    }
+    //光标聚集
+    function focu(bg) {
+        bg.style.background = "blue";
+    }
+    //网页加载
+    function msg() {
+        alert("网页内容加载完毕！");
+    }
+</script>
+</body>
+</html>

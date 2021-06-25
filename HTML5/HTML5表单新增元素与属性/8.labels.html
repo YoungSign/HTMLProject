@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>labels属性</title>
+</head>
+<body>
+<!--为表单元素、button、select添加一个NodeList对象，代表该元素所构成的集合-->
+<form id="formLabels">
+    <label id="labels" for="txt_name">姓名</label>
+    <input id="txt_name">
+    <input type="button" id="btnVal" value="验证" onclick="val()">
+</form>
+
+<script>
+    function val() {
+        var txtName = document.getElementById("txt_name");
+        var button = document.getElementById("btnVal");
+        var form = document.getElementById("formLabels");
+        if (txtName.value.trim() == "") {
+            var label = document.createElement("label");
+            label.setAttribute("for", "txt_name");
+            form.insertBefore(label, button);
+            txtName.labels[1].innerHTML = "请输入姓名！";
+            txtName.labels[1].setAttribute("style", "font-size:9px;color:red");
+        }
+    }
+</script>
+</body>
+</html>

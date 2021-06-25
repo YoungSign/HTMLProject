@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Range对象方法之setStartsetEnd等方法</title>
+</head>
+
+<body>
+    <!--setStar方法用于将某个节点中的某处位置指定为Range对象所代表区域的起点位置-->
+    <!--setEnd方法用于某个节点中的某处位置指定为Range对象所代表区域的结束位置-->
+    <!--setStar与setEnd同时使用较好-->
+    <div id="div" style="color: red">这段文字用来删除</div>
+    <button onclick="deleteChar()">删除文字</button>
+
+    <!--setStartBefore用于将某个节点的起点设为Range对象所代表区域的起点位置-->
+    <!--setStartAfter用于将某个节点的终点设为Range对象所代表区域的起点位置-->
+    <!--setEndBefore用于将某个节点的终点设为Range对象所代表区域的起点位置-->
+    <!--setEndAfter用于将某个节点的终点设为Range对象所代表区域的终点位置-->
+
+    <table id="table" border="1px" cellspacing="0px" cellpadding="0">
+        <tr>
+            <td>内容1</td>
+            <td>内容2</td>
+        </tr>
+        <tr>
+            <td>内容3</td>
+            <td>内容4</td>
+        </tr>
+    </table>
+    <button onclick="deleteRow()">删除第一行</button>
+    <script>
+        function deleteChar() {
+            var div = document.getElementById("div");
+            var textNode = div.firstChild;
+            var rangeObj = document.createRange();
+            rangeObj.setStart(textNode, 1);
+            rangeObj.setEnd(textNode, 4);
+            rangeObj.deleteContents();
+        }
+
+        function deleteRow() {
+            var table = document.getElementById("table");
+            if (table.rows.length > 0) {
+                var row = table.rows[0];
+                var rangeObj = document.createRange();
+                rangeObj.setStartBefore(row);
+                rangeObj.setEndAfter(row);
+                rangeObj.deleteContents();
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>form表单的验证</title>
+</head>
+<body>
+<form id="testform" onsubmit="check()" novalidate>
+    <label for="email">Email</label>
+    <input name="email" type="email" id="email">
+    <br>
+    <input type="submit">
+</form>
+
+<script>
+    function check() {
+        var email = document.getElementById("email");
+        if (email.value == "") {
+            alert("请输入Email！");
+            return false;
+        }
+
+        else if (!email.checkValidity()) {
+            alert("请输入正确的Email地址！");
+            return false;
+        }
+
+        else {
+            return true;
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>control属性</title>
+</head>
+<body>
+<!--可以在标签内部放置一个表单元素，并通过该标签的control属性来访问表单元素-->
+<form>
+    <label id="label">
+        邮编
+        <input id="txt_zip" maxlength="6">
+        <small>请输入6位数字</small>
+    </label>
+    <input type="button" value="设置默认值" onclick="setValue()">
+</form>
+
+<script>
+    function setValue() {
+        var label = document.getElementById("label");
+        var textbox = label.control;
+        textbox.value = "010101"
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>section元素</title>
+</head>
+<body>
+
+<!--section用于对页面上的内容进行分块-->
+<!--不能与有完整内容的article混淆-->
+<!--article元素是一个特殊的section元素，article更有独立性-->
+<!--section元素强调的是分段、分块，article元素强调的是独立性-->
+<!--section不能作为设置样式的容器，用div-->
+<!--如果article、aside、nav更符合使用条件，那不要使用section-->
+<!--没有标题内容的不要使用section元素，section需要存在一个标题-->
+
+<section>
+    <h1>H1元素</h1>
+    <p>P元素</p>
+</section>
+
+<article>
+    <h1>H1元素</h1>
+    <p>P元素</p>
+    <section>
+        <h2>H2元素</h2>
+        <p>P标签</p>
+    </section>
+    <section>
+        <h2>H2元素</h2>
+        <p>P标签</p>
+    </section>
+</article>
+
+<section>
+    <h1>H1元素</h1>
+    <article>
+        <h2>H2元素</h2>
+        <p>P元素</p>
+    </article>
+    <article>
+        <h2>H2元素</h2>
+        <p>P元素</p>
+    </article>
+    <article>
+        <h2>H2元素</h2>
+        <p>P元素</p>
+    </article>
+</section>
+</body>
+</html>

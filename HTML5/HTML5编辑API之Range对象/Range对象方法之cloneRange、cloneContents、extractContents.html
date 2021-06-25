@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Range对象方法之cloneRange、clonContents、extractContents</title>
+</head>
+
+<body>
+    <!--cloneRange方法用于当前的Range对象进行复制，返回当前Range的对象-->
+    <p id="p">这是一个P标签</p>
+    <button onclick="cloneRange()">复制</button>
+
+    <!--cloneContents方法用于在页面是追加一段HTML代码并且将Range对象所代表的区域中的HTML代码复制追加带HTML代码之后-->
+    <div id="div">
+        这是一个div<br>
+        <button onclick="cloneContents()">复制</button>
+        <br>
+    </div>
+
+    <!--extractContents方法用于Range对象所代表区域中的HTML代码克隆到documentFrankment对象中-->
+    <div id="srcDiv" style="background-color: aquamarine;width: 300px;height: 50px">
+        extractContents的div srcDiv
+    </div>
+    <div id="distDiv" style="background-color: bisque;width: 300px;height: 50px"></div>
+    <button onclick="extractContents()">移动元素</button>
+
+    <script>
+        function cloneRange() {
+            var rangeObj = document.createRange();
+            rangeObj.selectNodeContents(document.getElementById("p"));
+            var rangeClone = rangeObj.cloneRange();
+            alert(rangeClone.toString());
+        }
+
+        function cloneContents() {
+            var div = document.getElementById("div");
+            var rangeObj = document.createRange();
+            rangeObj.selectNodeContents(div);
+            var docFrangMent = rangeObj.cloneContents();
+            div.appendChild(docFrangMent);
+        }
+
+        function extractContents() {
+            var srcDiv = document.getElementById("srcDiv");
+            var distDiv = document.getElementById("distDiv");
+            var rangeObj = document.createRange();
+            rangeObj.selectNodeContents(srcDiv);
+            var docFragment = rangeObj.extractContents();
+            distDiv.appendChild(docFragment);
+        }
+    </script>
+</body>
+
+</html>

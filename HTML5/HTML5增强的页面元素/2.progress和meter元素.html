@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>progress和meter元素</title>
+</head>
+<body>
+<!--progress元素-->
+<!--progress元素表示一个任务的完成进度，是完成任务情况的一个属性，values属性代表当前的工作量，有最大值和最小值来规定范围。-->
+<section>
+    <h2>progress元素的使用</h2>
+    <p>完成的百分比
+        <progress id="progress" style="background-color: blue" max="100">
+            <span>0</span>%
+        </progress>
+    </p>
+    <input type="button" onclick="progress()" value="点击">
+</section>
+
+<script>
+    function progress() {
+//        for (var i = 0; i < 100; i++) {
+//            setTimeout(function () {
+//                updateprogress(i);
+//            }, 2000)
+//
+//        }
+        var i = 0;
+
+        function thread_one() {
+            if (i <= 100) {
+                i++;
+                updateprogress(i);
+            }
+        }
+
+        setInterval(thread_one, 100);
+
+    }
+
+    function updateprogress(newValue) {
+        var progressBar = document.getElementById("progress");
+        progressBar.value = newValue;
+        progressBar.getElementsByTagName("span")[0].textContent = newValue;
+    }
+</script>
+
+<!--meter元素-->
+<!--meter元素表示规定数值内的数值量，属性有6个value、最小值、最大值、下限、上限和最佳值-->
+<h2>meter元素的使用</h2>
+<meter value="40" max="100" min="0" low="10" high="30" optimum="80"></meter>
+<meter>40/100</meter>
+</body>
+</html>

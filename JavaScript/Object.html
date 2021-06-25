@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Object</title>
+</head>
+<body>
+<!--创建对象-->
+<script>
+    //    //    第一种创建对象方法
+    //    people = new Object();
+    //    people.name = "Young";
+    //    people.age = 23;
+    //    document.write("name:" + people.name + ",age:" + people.age);
+    //
+    //    //    第二种创建对象方法
+    //    people = {name: "Young", age: "23"};
+    //    document.write("name:" + people.name + ",age:" + people.age);
+    //    function people(name, age) {
+    //        this.name = name;
+    //        this.age = age;
+    //    }
+    //    son = new people("Young", 23);
+    //    document.write("name:" + son.name + ",age:" + son.age);
+
+    //    var str = "Hello World!";
+    //    var sstr = "Hello Y o u n g !";
+    //    //获取字符串长度
+    //    document.write("字符串长度：" + str.length);
+    //    //在字符串中查找字符串的位置
+    //    document.write(str.indexOf("World"));
+    //    //内容匹配
+    //    document.write(str.match("World"));
+    //    //替换内容
+    //    document.write(str.replace("!", "!!!"));
+    //    //转换大小写
+    //    document.write(str.toUpperCase());
+    //    document.write(str.toLowerCase());
+    //    //字符串转为数组
+    //    var s = sstr.split(" ");
+    //    document.write(s[0]);
+
+    //    var date = new Date();
+    //    document.write(date);
+    //    //获取年份
+    //    document.write(date.getFullYear());
+    //    //获取毫秒数
+    //    document.write(date.getTime());
+    //    //设置时间
+    //    date.setFullYear(1993, 0, 21);
+    //    document.write(date);
+
+    //    //时钟
+    //    function startTime() {
+    //        var today = new Date();
+    //        var hour = today.getHours();
+    //        var miu = today.getMinutes();
+    //        var sec = today.getSeconds();
+    //        miu = checkTime(miu);
+    //        sec = checkTime(sec);
+    //        document.getElementById("time").innerHTML = hour + ":" + miu + ":" + sec;
+    //        //每1s调用一次startTime（）方法
+    //        setTimeout(function () {
+    //            startTime();
+    //        }, 1000);
+    //    }
+    //
+    //    //检查分秒数是否大于10
+    //    function checkTime(time) {
+    //        if (time < 10) {
+    //            time = "0" + time;
+    //        }
+    //        return time;
+    //    }
+
+    //    var a = ["hello", "world"];
+    //    var b = ["Young", "Cooper"];
+    //    //合并元素
+    //    var c = a.concat(b);
+    //    document.write(c);
+
+    //    //排序
+    //    var a = ["a", "d", "g", "j", "l"];
+    //    document.write(a.sort(function (a, b) {
+    //        return b - a;
+    //    }));
+    //    var b = [2, 5, 1, 3, 6, 8, 3];
+    //    document.write(b.sort(function (a, b) {
+    //        return b - a;
+    //    }));
+
+    //    //追加
+    //    var a = ["a", "b"];
+    //    a.push("c")
+    //    document.write(a);
+
+    //    //翻转
+    //    var a = ["c", "b", "a"];
+    //    document.write(a.reverse());
+
+    //    //四舍五入
+    //    document.write(Math.round(2.5));
+    //    //随机数
+    //    document.write(parseInt(Math.random() * 100));
+    //最大值
+    document.write(Math.max(10, 11, 12, 13, 14, 15, 16));
+    //最小值
+    document.write(Math.min(10, 11, 12, 13, 14, 15, 16));
+    //绝对值
+    document.write(Math.abs(-16));
+</script>
+<div id="time"></div>
+</body>
+</html>

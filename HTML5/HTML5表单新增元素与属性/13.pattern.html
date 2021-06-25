@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文本框的pattern属性</title>
+</head>
+<body>
+<!--pattern属性是规定输入的规则的正则表达式，如不符合规则就不能提交-->
+<form action="http://202.108.22.5">
+    请输入：
+    <!--输入范围是A-Z，输入的长度是3个字符-->
+    <input pattern="[A-Z]{3}" name="pattern">
+    <input type="submit">
+</form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Range对象基本概念</title>
+</head>
+<body>
+<!--Range对象代表页面上的一段连续的区域。通过Range对象，可以获取或修改网页上的任何区域-->
+Selection对象和Range对象的使用
+<input type="button" value="单击" onclick="rangeTest();">
+<div id="showRange"></div>
+
+<script>
+    function rangeTest() {
+        var html;
+        showRangeDiv = document.getElementById("showRange");
+        selection = document.getSelection();
+        //selection.rangeCount获取选取的内容区域，大于0代表有选中的区域
+        if (selection.rangeCount > 0) {
+            html = "选取了：" + selection.rangeCount + "段内容<br/>";
+            for (var i = 0; i < selection.rangeCount; i++) {
+                //selection.getRangeAt()获取Range对象的序号
+                //在Chrome和safari浏览器中只能选取一个区域，在fireFox中可以选中多个区域
+                var range = selection.getRangeAt(i);
+                html += "第" + (i + 1) + "段内容为：" + range + "<br/>";
+
+            }
+            showRangeDiv.innerHTML = html;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Range对象方法之SelectNode等方法</title>
+</head>
+<body>
+<!--SelectNode方法用于Range对象起点指定为某个节点的起点，将Range对象的终点指定为该节点的终点，使Range对象所代表的区域中包含该节点，该方法并不将该节点设定为高亮选取状态，如果想选取节点则需要使用Selection对象的endRange方法-->
+<!--SelectNodeContents方法用于Range对象的起点指定为某个节点中的所有内容的起点，将Range对象的终点指定为该内容中所有的终点，使Range对象代表的区域中包含该节点中的所有内容-->
+<!--deleteContents方法用于将对象所包含的内容从页面中进行删除-->
+<div style="background-color: #e0a0b0;width: 300px;height: 50px" id="div">元素中的内容</div>
+<button onclick="deleteRangeContents(true)">删除内容</button>
+<button onclick="deleteRangeContents(false)">删除元素</button>
+
+<script>
+    function deleteRangeContents(onlyContent) {
+        var div = document.getElementById("div");
+        var rangeObj = document.createRange();
+        if (onlyContent) {
+            rangeObj.selectNodeContents(div);
+            rangeObj.deleteContents();
+        }
+
+        else {
+            rangeObj.selectNode(div);
+            rangeObj.deleteContents();
+        }
+    }
+</script>
+</body>
+</html>

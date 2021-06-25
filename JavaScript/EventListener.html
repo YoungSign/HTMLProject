@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EventListener</title>
+</head>
+<body>
+<button onclick="change()" id="btn">按钮</button>
+
+<script>
+    //    添加了一个点击事件
+    //    document.getElementById("btn").addEventListener("click", function () {
+    //        alert("hello")
+    //    });
+
+    var i = document.getElementById("btn");
+    i.addEventListener("click", hello);//添加句柄
+    i.addEventListener("click", world);
+    i.removeEventListener("click", hello);//移除句柄
+
+    function hello() {
+        alert("Hello!");
+    }
+
+    function world() {
+        alert("world");
+    }
+</script>
+</body>
+</html>

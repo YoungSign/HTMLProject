@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文本框的selectiondirection属性</title>
+</head>
+<body>
+<!--获取用户选取文字的方式，正向选取或没有选取为forward，反向选取为backward-->
+<form>
+    <input type="test" name="text">
+    <input type="button" value="按钮" onclick="func()">
+</form>
+
+<script>
+    function func() {
+        //forms[0]表单上的第一个form，['text']是表单的名字
+        var control = document.forms[0]['text'];
+        var dir = control.selectionDirection;
+        alert(dir);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSEvent</title>
+</head>
+<body>
+<div id="div">
+    <button id="btn">按钮</button>
+    <a id="aid" href="http://202.108.22.5">百度</a>
+</div>
+
+<script>
+    var btn = document.getElementById("btn");
+    //    //0级处理事件，会被覆盖
+    //    btn.onclick = function () {
+    //        alert("这是DOM0级事件处理程序1")
+    //    }
+    //    btn.onclick = function () {
+    //        alert("这是DOM0级事件处理程序2")
+    //    }
+    //    //清空处理事件
+    //    btn.onclick = null;
+
+    //    //2级处理事件，依次处理事件
+    //    btn.addEventListener("click", eventListener1);
+    //    btn.addEventListener("click", eventListener2);
+    //    function eventListener1() {
+    //        alert("DOM2级事件处理程序1");
+    //    }
+    //    function eventListener2() {
+    //        alert("DOM2级事件处理程序2");
+    //    }
+    //    //清空2级处理事件
+    //    btn.removeEventListener("click", eventListener1);
+
+    //    //兼容性
+    //    if (btn.addEventListener) {
+    //        btn.addEventListener("click", nor);
+    //    }
+    //    else if (btn.attachEvent) {
+    //        btn.attachEvent("onclick", nor);
+    //    }
+    //    else {
+    //        btn.onclick = nor();
+    //    }
+    //    function nor() {
+    //        alert("normal");
+    //    }
+
+    //事件对象
+    document.getElementById("btn").addEventListener("click", showType);
+    document.getElementById("div").addEventListener("click", showDiv);
+    document.getElementById("aid").addEventListener("click", showA);
+    function showType(event) {
+        //获取事件类型
+        alert(event.type);
+        //获取事件目标
+        alert(event.target);
+        //阻止事件冒泡
+        event.stopPropagation();
+    }
+
+    function showDiv() {
+        alert("div");
+    }
+
+    function showA(event) {
+        //阻止事件默认行为
+        event.preventDefault();
+    }
+</script>
+</body>
+</html>

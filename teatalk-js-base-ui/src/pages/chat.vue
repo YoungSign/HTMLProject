@@ -18,8 +18,8 @@
           <button @click="quitOrg">踢人</button>
           <button @click="changeOrgCreater">转让群主</button>
           <button @click="pullOfflineMsg">拉取离线推送</button>
-          <button @click="friendOfflineNotify">获取好友离线通知</button>
-          <button @click="refuseFriendNotify">拒绝好友反馈</button>
+          <button @click="getPPFocusList">获取关注的公众号</button>
+          <button @click="setPPFocus">关注</button>
           <div class="log-params-list">
             <div class="input-label">
               <span>传入key：</span>
@@ -724,11 +724,11 @@ export default {
     },
     getPPFocusList() {
       let from = this.from;
-      let accountType = 1;
+      // let accountType = 1;
       let params = {
         options: {
           from: from,
-          accountType: accountType,
+          // accountType: accountType,
         },
         callback: (success, result, reason) => {
           if (!success) {
@@ -741,6 +741,28 @@ export default {
       };
       console.log("params--------------", params);
       window.TeatalkSdk.invoke("getPPFocusList", params);
+    },
+    setPPFocus() {
+      let from = this.from;
+      let to = this.to;
+      let params = {
+        options: {
+          from: from,
+          to: to,
+          eventType: 1,
+          channelId: 2,
+        },
+        callback: (success, result, reason) => {
+          if (!success) {
+            console.warn("通信连接失败", result, reason);
+            return;
+          }
+          console.log("callbackSuccess");
+          console.log("result: ", result);
+        },
+      };
+      console.log("params--------------", params);
+      window.TeatalkSdk.invoke("setPPFocus", params);
     },
     CollectMsg() {
       let vm = this;

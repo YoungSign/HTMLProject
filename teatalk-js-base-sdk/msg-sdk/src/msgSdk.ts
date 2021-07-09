@@ -70,13 +70,14 @@ let TeatalkMsgSdk: any = {
                                 file_size: uploadFile.size,
                                 range: uploadFileChunk.startByte + "-" + uploadFileChunk.endByte,
                                 // status: "",
-                                is_temp: "true"
+                                is_temp: "false"
                             };
                         },
                         target: function (uploadFile, uploadFileChunk) {
                             console.log('-----------uploadFile', uploadFile);
+                            const type = uploadFile.rawFile.type ? uploadFile.rawFile.type.split("/")[0] : '';
                             const query = {
-                                file_id: uploadFile.uniqueIdentifier,
+                                file_id: uploadFile.uniqueIdentifier + '_' + type.toUpperCase(),
                                 file_size: uploadFile.rawFile.fileSize
                             };
                             // const baseUrl = self.transferSdk.sdkParams.uploadBaseUrl || "//124.42.103.164:8083";
@@ -122,7 +123,7 @@ let TeatalkMsgSdk: any = {
             let callback = params.callback;
             let options = params.options;
             let sendType = params.sendType;
-            console.log(sendType , 'sendType')
+            console.log(sendType, 'sendType')
             let object: any = applyProperties(options, {});
             let packet = new CinMsgSendPacket(object);
             packet.setSendType(sendType);
@@ -171,7 +172,7 @@ let TeatalkMsgSdk: any = {
                 // 1 生成文件UID、检查文件在服务器状态
                 const treatFilePrepareResults: any = await doMultiTasks(queue, function (prepareFileInfo) {
                     const type = prepareFileInfo.file.type ? prepareFileInfo.file.type.split("/")[0] : '';
-                    const fileType = prepareFileInfo.file.name ? prepareFileInfo.file.name.substr(prepareFileInfo.file.name.lastIndexOf('.')): '';
+                    const fileType = prepareFileInfo.file.name ? prepareFileInfo.file.name.substr(prepareFileInfo.file.name.lastIndexOf('.')) : '';
                     const subTreatTask = [];
                     // 生成文件UID
                     subTreatTask.push(MediaUtil.getUid(prepareFileInfo.file).then(function (uid: string) {
@@ -180,7 +181,7 @@ let TeatalkMsgSdk: any = {
                         indexByFileType[prepareFileInfo.type] = prepareFileInfo;
                         // 检查文件在服务器状态
                         return MediaUtil.fileExist(self.baseSdk.app.dtcurl || self.transferSdk.sdkParams.uploadBaseUrl,
-                            { fileId: uid, fileSize: prepareFileInfo.file.size, fileType: fileType },
+                            { fileId: uid, fileSize: prepareFileInfo.file.size, fileType: type },
                             self.baseSdk.app.transferToken);
                     }));
                     return subTreatTask;
@@ -381,59 +382,60 @@ let TeatalkMsgSdk: any = {
 
             // 一、先上传文件
             doQueueUpload(params.options.messageId, indexByUid, indexByFileType, queue, onNotify, self.msgFileUpload)
-            // 二、再发文件消息
-            .then(
-                function (res) {
-                    let options = params.options;
-                    let sendType = params.sendType;
-                    let object: any = applyProperties(options, { type: 2 });
-                    if (!object.content) {
-                        object.content = {};
-                    }
-                    if (indexByFileType["file"]) {
-                        object.content.fileId = indexByFileType["file"].file.uid;
-                        object.content.fileSize = indexByFileType["file"].file.size;
-                        if (!object.content.fileName) {
-                            object.content.fileName = indexByFileType["file"].file.fileName;
+                // 二、再发文件消息
+                .then(
+                    function (res) {
+                        let options = params.options;
+                        let sendType = params.sendType;
+                        let object: any = applyProperties(options, { type: 2 });
+                        if (!object.content) {
+                            object.content = {};
                         }
-                    }
-                    if (indexByFileType["thumb"]) {
-                        object.content.thumbId = indexByFileType["thumb"].file.uid;
-                        object.content.thumbSize = indexByFileType["thumb"].file.size;
-                    }
-                    if (indexByFileType["origin"]) {
-                        object.content.originImageId = indexByFileType["origin"].file.uid;
-                        object.content.originImageSize = indexByFileType["origin"].file.size;
-                    }
-                    let packet = new CinMsgSendPacket(object);
-                    packet.setSendType(sendType);
-                    self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
-                        respons: string,
-                        data: {
-                            messageId: string,
-                            from: number,
-                            to: number,
-                            msgSequence: number,
-                            serverTime: number,
-                            capacity: string,
-                            tip: string
+                        if (indexByFileType["file"]) {
+                            let type = indexByFileType["file"].file.type.split("/")[0];
+                            object.content.fileId = indexByFileType["file"].file.uid + '_' + type.toUpperCase();
+                            object.content.fileSize = indexByFileType["file"].file.size;
+                            object.content.fileName = indexByFileType["file"].file.name;
                         }
-                    }, reason?: string) => {
-                        if (result) {
-                            result.data = applyProperties(result.data || {}, {content: object.content});
+                        if (indexByFileType["thumb"]) {
+                            let type = indexByFileType["thumb"].file.type.split("/")[0];
+                            object.content.thumbId = indexByFileType["thumb"].file.uid + '_' + type.toUpperCase();
+                            object.content.thumbSize = indexByFileType["thumb"].file.size;
                         }
-                        callback(success, result, reason);
-                    });
-                },
-                function (err) {
-                    console.log(err);
-                    callback && callback(false, null, "上传文件失败");
-                }
-            ).finally(function () {
-                indexByUid = null;
-                indexByFileType = null;
-                queue = null;
-            });
+                        if (indexByFileType["origin"]) {
+                            let type = indexByFileType["origin"].file.type.split("/")[0];
+                            object.content.originImageId = indexByFileType["origin"].file.uid + '_' + type.toUpperCase();
+                            object.content.originImageSize = indexByFileType["origin"].file.size;
+                        }
+                        let packet = new CinMsgSendPacket(object);
+                        packet.setSendType(sendType);
+                        self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
+                            respons: string,
+                            data: {
+                                messageId: string,
+                                from: number,
+                                to: number,
+                                msgSequence: number,
+                                serverTime: number,
+                                capacity: string,
+                                tip: string
+                            }
+                        }, reason?: string) => {
+                            if (result) {
+                                result.data = applyProperties(result.data || {}, { content: object.content });
+                            }
+                            callback(success, result, reason);
+                        });
+                    },
+                    function (err) {
+                        console.log(err);
+                        callback && callback(false, null, "上传文件失败");
+                    }
+                ).finally(function () {
+                    indexByUid = null;
+                    indexByFileType = null;
+                    queue = null;
+                });
 
             return params.options.messageId;
         });
@@ -504,59 +506,60 @@ let TeatalkMsgSdk: any = {
 
             // 一、先上传文件
             doQueueUpload(params.options.messageId, indexByUid, indexByFileType, queue, onNotify, self.msgFileUpload)
-            // 二、再发文件消息
-            .then(
-                function (res) {
-                    let options = params.options;
-                    let sendType = params.sendType;
-                    let object: any = applyProperties(options, { type: 0 });
-                    if (!object.content) {
-                        object.content = {};
-                    }
-                    if (indexByFileType["file"]) {
-                        object.content.fileId = indexByFileType["file"].file.uid;
-                        object.content.fileSize = indexByFileType["file"].file.size;
-                        if (!object.content.fileName) {
-                            object.content.fileName = indexByFileType["file"].file.fileName;
+                // 二、再发文件消息
+                .then(
+                    function (res) {
+                        let options = params.options;
+                        let sendType = params.sendType;
+                        let object: any = applyProperties(options, { type: 0 });
+                        if (!object.content) {
+                            object.content = {};
                         }
-                    }
-                    if (indexByFileType["thumb"]) {
-                        object.content.thumbId = indexByFileType["thumb"].file.uid;
-                        object.content.thumbSize = indexByFileType["thumb"].file.size;
-                    }
-                    if (indexByFileType["origin"]) {
-                        object.content.originImageId = indexByFileType["origin"].file.uid;
-                        object.content.originImageSize = indexByFileType["origin"].file.size;
-                    }
-                    let packet = new CinMsgSendPacket(object);
-                    packet.setSendType(sendType);
-                    self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
-                        respons: string,
-                        data: {
-                            messageId: string,
-                            from: number,
-                            to: number,
-                            msgSequence: number,
-                            serverTime: number,
-                            capacity: string,
-                            tip: string
+                        if (indexByFileType["file"]) {
+                            let type = indexByFileType["file"].file.type.split("/")[0];
+                            object.content.fileId = indexByFileType["file"].file.uid + '_' + type.toUpperCase();
+                            object.content.fileSize = indexByFileType["file"].file.size;
+                            object.content.fileName = indexByFileType["file"].file.name;
                         }
-                    }, reason?: string) => {
-                        if (result) {
-                            result.data = applyProperties(result.data || {}, {content: object.content});
+                        if (indexByFileType["thumb"]) {
+                            let type = indexByFileType["thumb"].file.type.split("/")[0];
+                            object.content.thumbId = indexByFileType["thumb"].file.uid + '_' + type.toUpperCase();
+                            object.content.thumbSize = indexByFileType["thumb"].file.size;
                         }
-                        callback(success, result, reason);
-                    });
-                },
-                function (err) {
-                    console.log(err);
-                    callback && callback(false, null, "上传图片失败");
-                }
-            ).finally(function () {
-                indexByUid = null;
-                indexByFileType = null;
-                queue = null;
-            });
+                        if (indexByFileType["origin"]) {
+                            let type = indexByFileType["origin"].file.type.split("/")[0];
+                            object.content.originImageId = indexByFileType["origin"].file.uid + '_' + type.toUpperCase();
+                            object.content.originImageSize = indexByFileType["origin"].file.size;
+                        }
+                        let packet = new CinMsgSendPacket(object);
+                        packet.setSendType(sendType);
+                        self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
+                            respons: string,
+                            data: {
+                                messageId: string,
+                                from: number,
+                                to: number,
+                                msgSequence: number,
+                                serverTime: number,
+                                capacity: string,
+                                tip: string
+                            }
+                        }, reason?: string) => {
+                            if (result) {
+                                result.data = applyProperties(result.data || {}, { content: object.content });
+                            }
+                            callback(success, result, reason);
+                        });
+                    },
+                    function (err) {
+                        console.log(err);
+                        callback && callback(false, null, "上传图片失败");
+                    }
+                ).finally(function () {
+                    indexByUid = null;
+                    indexByFileType = null;
+                    queue = null;
+                });
 
             return params.options.messageId;
         });
@@ -585,11 +588,13 @@ let TeatalkMsgSdk: any = {
             let callback = params.callback;
             let options = params.options;
             // let object: any = applyProperties(options, { type: 0, conversation: {
-            let object: any = applyProperties(options, { conversation: {    
-                sessionId: options.sessionId,
-                index: options.index,
-                pageSize: options.pageSize
-            }});
+            let object: any = applyProperties(options, {
+                conversation: {
+                    sessionId: options.sessionId,
+                    index: options.index,
+                    pageSize: options.pageSize
+                }
+            });
             let packet = new CinMsgHistoryPacket(object);
             self.baseSdk.ses.sendRequest(packet, callback);
         });
@@ -635,7 +640,7 @@ let TeatalkMsgSdk: any = {
         }) {
             let callback = params.callback;
             let options = params.options;
-            let object: any = applyProperties(options, { });
+            let object: any = applyProperties(options, {});
             let packet = new CinMsgCollectPacket(object);
             console.log(packet)
             self.baseSdk.ses.sendRequest(packet, callback);
@@ -659,15 +664,15 @@ let TeatalkMsgSdk: any = {
             self.baseSdk.ses.sendRequest(packet, callback);
         });
 
-         // 接口9--获取收藏消息列表
-         self.baseSdk.register("msgCollectList", function (params: {
+        // 接口9--获取收藏消息列表
+        self.baseSdk.register("msgCollectList", function (params: {
             options: {
                 from: number;
                 converInfo: any;
             },
             callback: (success: boolean, result: {
                 from: number;
-                version: number;             
+                version: number;
                 bodyInfoIds: any;
             }, reason?: string) => void
         }) {
@@ -696,8 +701,8 @@ let TeatalkMsgSdk: any = {
             self.baseSdk.ses.sendRequest(packet, callback);
         });
 
-         // 接口11--消息已读
-         self.baseSdk.register("msgReadReply", function (params: {
+        // 接口11--消息已读
+        self.baseSdk.register("msgReadReply", function (params: {
             options: {
                 from: number,
                 friUserId: number, // 会话id
@@ -728,7 +733,7 @@ let TeatalkMsgSdk: any = {
         }) {
             let callback = params.callback;
             let options = params.options;
-            let object: any = applyProperties(options, { });
+            let object: any = applyProperties(options, {});
             let packet = new CinMsgOffLinePacket(object);
             self.baseSdk.ses.sendRequest(packet, callback);
         });
@@ -752,7 +757,7 @@ let TeatalkMsgSdk: any = {
             let packet = new CinMsgReadReplyClearPacket(object);
             self.baseSdk.ses.sendRequest(packet, callback);
         });
-        
+
         // 接口12--消息免打扰
         self.baseSdk.register("msgImmunity", function (params: {
             options: {
@@ -845,7 +850,7 @@ let TeatalkMsgSdk: any = {
         }) {
             let callback = params.callback;
             let options = params.options;
-            let object: any = applyProperties(options, { });
+            let object: any = applyProperties(options, {});
             let packet = new CinMsgSocialOffLineNtfPacket(object);
             self.baseSdk.ses.sendRequest(packet, callback);
         });
@@ -916,59 +921,60 @@ let TeatalkMsgSdk: any = {
 
             // 一、先上传文件
             doQueueUpload(params.options.messageId, indexByUid, indexByFileType, queue, onNotify, self.msgFileUpload)
-            // 二、再发文件消息
-            .then(
-                function (res) {
-                    let options = params.options;
-                    let sendType = params.sendType;
-                    let object: any = applyProperties(options, { type: 3 });
-                    if (!object.content) {
-                        object.content = {};
-                    }
-                    if (indexByFileType["file"]) {
-                        object.content.fileId = indexByFileType["file"].file.uid;
-                        object.content.fileSize = indexByFileType["file"].file.size;
-                        if (!object.content.fileName) {
+                // 二、再发文件消息
+                .then(
+                    function (res) {
+                        let options = params.options;
+                        let sendType = params.sendType;
+                        let object: any = applyProperties(options, { type: 3 });
+                        if (!object.content) {
+                            object.content = {};
+                        }
+                        if (indexByFileType["file"]) {
+                            let type = indexByFileType["file"].file.type.split("/")[0];
+                            object.content.fileId = indexByFileType["file"].file.uid + '_' + type.toUpperCase();
+                            object.content.fileSize = indexByFileType["file"].file.size;
                             object.content.fileName = indexByFileType["file"].file.name;
                         }
-                    }
-                    if (indexByFileType["thumb"]) {
-                        object.content.thumbId = indexByFileType["thumb"].file.uid;
-                        object.content.thumbSize = indexByFileType["thumb"].file.size;
-                    }
-                    if (indexByFileType["origin"]) {
-                        object.content.originImageId = indexByFileType["origin"].file.uid;
-                        object.content.originImageSize = indexByFileType["origin"].file.size;
-                    }
-                    let packet = new CinMsgSendPacket(object);
-                    packet.setSendType(sendType);
-                    self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
-                        respons: string,
-                        data: {
-                            messageId: string,
-                            from: number,
-                            to: number,
-                            msgSequence: number,
-                            serverTime: number,
-                            capacity: string,
-                            tip: string
+                        if (indexByFileType["thumb"]) {
+                            let type = indexByFileType["thumb"].file.type.split("/")[0];
+                            object.content.thumbId = indexByFileType["thumb"].file.uid + '_' + type.toUpperCase();
+                            object.content.thumbSize = indexByFileType["thumb"].file.size;
                         }
-                    }, reason?: string) => {
-                        if (result) {
-                            result.data = applyProperties(result.data || {}, {content: object.content});
+                        if (indexByFileType["origin"]) {
+                            let type = indexByFileType["origin"].file.type.split("/")[0];
+                            object.content.originImageId = indexByFileType["origin"].file.uid + '_' + type.toUpperCase();
+                            object.content.originImageSize = indexByFileType["origin"].file.size;
                         }
-                        callback(success, result, reason);
-                    });
-                },
-                function (err) {
-                    console.log(err);
-                    callback && callback(false, null, "上传视频失败");
-                }
-            ).finally(function () {
-                indexByUid = null;
-                indexByFileType = null;
-                queue = null;
-            });
+                        let packet = new CinMsgSendPacket(object);
+                        packet.setSendType(sendType);
+                        self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
+                            respons: string,
+                            data: {
+                                messageId: string,
+                                from: number,
+                                to: number,
+                                msgSequence: number,
+                                serverTime: number,
+                                capacity: string,
+                                tip: string
+                            }
+                        }, reason?: string) => {
+                            if (result) {
+                                result.data = applyProperties(result.data || {}, { content: object.content });
+                            }
+                            callback(success, result, reason);
+                        });
+                    },
+                    function (err) {
+                        console.log(err);
+                        callback && callback(false, null, "上传视频失败");
+                    }
+                ).finally(function () {
+                    indexByUid = null;
+                    indexByFileType = null;
+                    queue = null;
+                });
 
             return params.options.messageId;
         });
@@ -1027,59 +1033,60 @@ let TeatalkMsgSdk: any = {
 
             // 一、先上传文件
             doQueueUpload(params.options.messageId, indexByUid, indexByFileType, queue, onNotify, self.msgFileUpload)
-            // 二、再发文件消息
-            .then(
-                function (res) {
-                    let options = params.options;
-                    let sendType = params.sendType;
-                    let object: any = applyProperties(options, { type: 1 });
-                    if (!object.content) {
-                        object.content = {};
-                    }
-                    if (indexByFileType["file"]) {
-                        object.content.fileId = indexByFileType["file"].file.uid;
-                        object.content.fileSize = indexByFileType["file"].file.size;
-                        if (!object.content.fileName) {
+                // 二、再发文件消息
+                .then(
+                    function (res) {
+                        let options = params.options;
+                        let sendType = params.sendType;
+                        let object: any = applyProperties(options, { type: 1 });
+                        if (!object.content) {
+                            object.content = {};
+                        }
+                        if (indexByFileType["file"]) {
+                            let type = indexByFileType["file"].file.type.split("/")[0];
+                            object.content.fileId = indexByFileType["file"].file.uid + '_' + type.toUpperCase();
+                            object.content.fileSize = indexByFileType["file"].file.size;
                             object.content.fileName = indexByFileType["file"].file.name;
                         }
-                    }
-                    if (indexByFileType["thumb"]) {
-                        object.content.thumbId = indexByFileType["thumb"].file.uid;
-                        object.content.thumbSize = indexByFileType["thumb"].file.size;
-                    }
-                    if (indexByFileType["origin"]) {
-                        object.content.originImageId = indexByFileType["origin"].file.uid;
-                        object.content.originImageSize = indexByFileType["origin"].file.size;
-                    }
-                    let packet = new CinMsgSendPacket(object);
-                    packet.setSendType(sendType);
-                    self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
-                        respons: string,
-                        data: {
-                            messageId: string,
-                            from: number,
-                            to: number,
-                            msgSequence: number,
-                            serverTime: number,
-                            capacity: string,
-                            tip: string
+                        if (indexByFileType["thumb"]) {
+                            let type = indexByFileType["thumb"].file.type.split("/")[0];
+                            object.content.thumbId = indexByFileType["thumb"].file.uid + '_' + type.toUpperCase();
+                            object.content.thumbSize = indexByFileType["thumb"].file.size;
                         }
-                    }, reason?: string) => {
-                        if (result) {
-                            result.data = applyProperties(result.data || {}, {content: object.content});
+                        if (indexByFileType["origin"]) {
+                            let type = indexByFileType["origin"].file.type.split("/")[0];
+                            object.content.originImageId = indexByFileType["origin"].file.uid + '_' + type.toUpperCase();
+                            object.content.originImageSize = indexByFileType["origin"].file.size;
                         }
-                        callback(success, result, reason);
-                    });
-                },
-                function (err) {
-                    console.log(err);
-                    callback && callback(false, null, "上传语音失败");
-                }
-            ).finally(function () {
-                indexByUid = null;
-                indexByFileType = null;
-                queue = null;
-            });
+                        let packet = new CinMsgSendPacket(object);
+                        packet.setSendType(sendType);
+                        self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
+                            respons: string,
+                            data: {
+                                messageId: string,
+                                from: number,
+                                to: number,
+                                msgSequence: number,
+                                serverTime: number,
+                                capacity: string,
+                                tip: string
+                            }
+                        }, reason?: string) => {
+                            if (result) {
+                                result.data = applyProperties(result.data || {}, { content: object.content });
+                            }
+                            callback(success, result, reason);
+                        });
+                    },
+                    function (err) {
+                        console.log(err);
+                        callback && callback(false, null, "上传语音失败");
+                    }
+                ).finally(function () {
+                    indexByUid = null;
+                    indexByFileType = null;
+                    queue = null;
+                });
 
             return params.options.messageId;
         });
@@ -1095,7 +1102,7 @@ let TeatalkMsgSdk: any = {
                 content?: {
                     latitude?: number,
                     longitude: number,
-                    descFileId?: string  
+                    descFileId?: string
                 }
             },
             sendType: number,
@@ -1139,63 +1146,64 @@ let TeatalkMsgSdk: any = {
             }
             // 一、先上传文件
             doQueueUpload(params.options.messageId, indexByUid, indexByFileType, queue, onNotify, self.msgFileUpload)
-            // 二、再发文件消息
-            .then(
-                function (res) {
-                    let options = params.options;
-                    let sendType = params.sendType;
-                    let object: any = applyProperties(options, { type: 7 });
-                    if (!object.content) {
-                        object.content = {};
-                    }
-                    if (indexByFileType["file"]) {
-                        object.content.fileId = indexByFileType["file"].file.uid;
-                        object.content.fileSize = indexByFileType["file"].file.size;
-                        if (!object.content.fileName) {
+                // 二、再发文件消息
+                .then(
+                    function (res) {
+                        let options = params.options;
+                        let sendType = params.sendType;
+                        let object: any = applyProperties(options, { type: 7 });
+                        if (!object.content) {
+                            object.content = {};
+                        }
+                        if (indexByFileType["file"]) {
+                            let type = indexByFileType["file"].file.type.split("/")[0];
+                            object.content.fileId = indexByFileType["file"].file.uid + '_' + type.toUpperCase();
+                            object.content.fileSize = indexByFileType["file"].file.size;
                             object.content.fileName = indexByFileType["file"].file.name;
                         }
-                    }
-                    if (indexByFileType["thumb"]) {
-                        object.content.thumbId = indexByFileType["thumb"].file.uid;
-                        object.content.thumbSize = indexByFileType["thumb"].file.size;
-                    }
-                    if (indexByFileType["origin"]) {
-                        object.content.originImageId = indexByFileType["origin"].file.uid;
-                        object.content.originImageSize = indexByFileType["origin"].file.size;
-                    }
-                    let packet = new CinMsgSendPacket(object);
-                    packet.setSendType(sendType);
-                    self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
-                        respons: string,
-                        data: {
-                            messageId: string,
-                            from: number,
-                            to: number,
-                            msgSequence: number,
-                            serverTime: number,
-                            capacity: string,
-                            tip: string
+                        if (indexByFileType["thumb"]) {
+                            let type = indexByFileType["thumb"].file.type.split("/")[0];
+                            object.content.thumbId = indexByFileType["thumb"].file.uid + '_' + type.toUpperCase();
+                            object.content.thumbSize = indexByFileType["thumb"].file.size;
                         }
-                    }, reason?: string) => {
-                        if (result) {
-                            result.data = applyProperties(result.data || {}, {content: object.content});
+                        if (indexByFileType["origin"]) {
+                            let type = indexByFileType["origin"].file.type.split("/")[0];
+                            object.content.originImageId = indexByFileType["origin"].file.uid + '_' + type.toUpperCase();
+                            object.content.originImageSize = indexByFileType["origin"].file.size;
                         }
-                        callback(success, result, reason);
-                    });
-                },
-                function (err) {
-                    console.log(err);
-                    callback && callback(false, null, "上传图片失败");
-                }
-            ).finally(function () {
-                indexByUid = null;
-                indexByFileType = null;
-                queue = null;
-            });
+                        let packet = new CinMsgSendPacket(object);
+                        packet.setSendType(sendType);
+                        self.baseSdk.ses.sendRequest(packet, (success: boolean, result: {
+                            respons: string,
+                            data: {
+                                messageId: string,
+                                from: number,
+                                to: number,
+                                msgSequence: number,
+                                serverTime: number,
+                                capacity: string,
+                                tip: string
+                            }
+                        }, reason?: string) => {
+                            if (result) {
+                                result.data = applyProperties(result.data || {}, { content: object.content });
+                            }
+                            callback(success, result, reason);
+                        });
+                    },
+                    function (err) {
+                        console.log(err);
+                        callback && callback(false, null, "上传图片失败");
+                    }
+                ).finally(function () {
+                    indexByUid = null;
+                    indexByFileType = null;
+                    queue = null;
+                });
 
             return params.options.messageId;
         });
-        
+
         // 内部1--绑定监听
         self.baseSdk.addBinder({
             moduleId: MODULE_ID,
@@ -1204,15 +1212,15 @@ let TeatalkMsgSdk: any = {
                 if (moduleType !== MODULE_ID) {
                     return;
                 }
-                if(serverPublish.event == 0 && serverPublish.name) { // 收群普通消息
+                if (serverPublish.event == 0 && serverPublish.name) { // 收群普通消息
                     serverPublish.event = 'receiveOrgMsg'
-                }else if(serverPublish.event == 0 && serverPublish.type == 55) { // 收群@消息
+                } else if (serverPublish.event == 0 && serverPublish.type == 55) { // 收群@消息
                     serverPublish.event = 'receiveOrgAtMsg'
-                }else if(serverPublish.event == 1) { // 收消息
+                } else if (serverPublish.event == 1) { // 收消息
                     serverPublish.event = 'receiveMsg'
-                }else if(serverPublish.event == 106) { // 消息撤回
+                } else if (serverPublish.event == 106) { // 消息撤回
                     serverPublish.event = 'msgRevoke'
-                }else if(serverPublish.event == 0) { // 消息已读
+                } else if (serverPublish.event == 0) { // 消息已读
                     serverPublish.event = 'msgReadReply'
                 }
                 self.listener && self.listener(session, moduleType, serverPublish);

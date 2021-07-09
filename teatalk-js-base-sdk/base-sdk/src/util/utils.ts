@@ -472,7 +472,7 @@ export const MediaUtil = {
     },
     async compress(img, width, height, max, imgType, needUrl) {
         return new Promise((resolve) => {
-            const ratio = MediaUtil.getImageResizeRatio({width, height}, max);
+            const ratio = MediaUtil.getImageResizeRatio({ width, height }, max);
             let targetWidth = ratio < 1 ? width * ratio : width;
             let targetHeight = ratio < 1 ? height * ratio : height;
             if (!MediaUtil.currGetThumbCanvasObj) {
@@ -489,7 +489,7 @@ export const MediaUtil = {
             if (needUrl) {
                 dataUrl = MediaUtil.currGetThumbCanvasObj.toDataURL(imgType, quality);
             }
-            MediaUtil.currGetThumbCanvasObj.toBlob(function(blob) {
+            MediaUtil.currGetThumbCanvasObj.toBlob(function (blob) {
                 resolve({ blob, dataUrl });
             }, imgType, quality);
         });
@@ -569,12 +569,11 @@ export const MediaUtil = {
         };
         return new File([targetBlob], fileName, options);
     },
-    async fileExist(baseURL, { fileId, fileSize, fileType}, token) {
+    async fileExist(baseURL, { fileId, fileSize, fileType }, token) {
         try {
             const query = {
-                file_id: fileId,
-                file_size: fileSize,
-                file_type: fileType
+                file_id: fileId + '_' + fileType.toUpperCase(),
+                file_size: fileSize
             };
             const result = await axios({
                 method: "get",

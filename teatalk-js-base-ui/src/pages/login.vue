@@ -127,12 +127,12 @@ export default {
           isFocus: false
         },
         password: {
-          value: sessionStorage.getItem('password') || '',
+          value: sessionStorage.getItem('password') || 'q12345678',
           name: 'password',
           isFocus: false
         }
       },
-      toUserId: sessionStorage.getItem('toUserId') || '100001062',
+      toUserId: sessionStorage.getItem('toUserId') || '180000220221',
       logonType: 0,
       channel: 40003,
       type: 3,

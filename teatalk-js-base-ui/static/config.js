@@ -1,9 +1,0 @@
-// var ApiUrl = "wss://usee.abchina.com:8090/wsk/handle"	//生产
-// var ApiUrl = "wss://nat321.xyz:8443/wsk/handle"			//之前的外网测试
-var ApiUrl = "wss://ific.test.abchina.com:8090/wsk/handle" //外网测试
-// var ApiUrl = "wss://223.72.214.114:9443/wsk/handle"		//好久之前的
-// var ApiUrl = "ws://223.72.214.87:8090/wsk/handle"		//原测试
-// var ApiUrl = "ws://10.233.82.117:9639/wsk/handle"		//原联调
-// var ApiUrl = "ws://10.233.82.168:9639/wsk/handle"		//联调
-// var ApiUrl = "ws://127.0.0.1:8181/wsk/handle"			//本地
-// var ApiUrl = "wss://223.72.214.114:8090/wsk/handle" 		//245 8090
